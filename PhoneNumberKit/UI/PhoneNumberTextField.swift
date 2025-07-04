@@ -11,11 +11,17 @@
 import Foundation
 import UIKit
 
+public protocol CSCountryCodePickerDelegate: AnyObject {
+    /// Called when a country is selected from the picker.
+    func countryCodePickerViewControllerDidPickCountry(_ country: CountryCodePickerViewController.Country)
+}
+
 /// Custom text field that formats phone numbers
 open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
     public let utility: PhoneNumberUtility
 
     public lazy var flagButton = UIButton()
+    public var countryDelegate:CSCountryCodePickerDelegate?
 
     /// Override setText so number will be automatically formatted when setting text by code
     override open var text: String? {
@@ -563,6 +569,7 @@ extension PhoneNumberTextField: CountryCodePickerDelegate {
         } else {
             containingViewController?.dismiss(animated: true)
         }
+        countryDelegate?.countryCodePickerViewControllerDidPickCountry(country)
     }
 }
 
